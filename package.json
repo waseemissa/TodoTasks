@@ -2,7 +2,7 @@
   "homepage": "https://waseemissa.github.io/TodoTasks",
   "name": "todo-tasks",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",

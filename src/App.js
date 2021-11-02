@@ -1,6 +1,5 @@
 import "./App.css";
 import * as React from "react";
-import Button from "@mui/material/Button";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import MainPage from "./Pages/MainPage";
@@ -18,7 +17,6 @@ import UserFeed from "./Pages/Profile/UserFeed";
 import UserExperiencePage from "./Pages/Profile/UserExperiencePage";
 import ConnectionsPage from "./Pages/ConnectionsPage";
 import firebase from './firebase';
-import { render } from "@testing-library/react";
 
 export default class App extends React.Component {
 
@@ -37,7 +35,6 @@ export default class App extends React.Component {
   render(){
     return (
       <div>
-        <Router basename='/index.html'>
         <Switch>
           <Route path="/" exact>
             <LoginPage />
@@ -84,7 +81,6 @@ export default class App extends React.Component {
             <UserExperiencePage />
           </Route>
         </Switch>
-        </Router>
       </div>
     );
   }
