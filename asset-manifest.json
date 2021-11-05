@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/TodoTasks/static/css/main.dac183cf.chunk.css",
-    "main.js": "/TodoTasks/static/js/main.1c5a6745.chunk.js",
-    "main.js.map": "/TodoTasks/static/js/main.1c5a6745.chunk.js.map",
+    "main.js": "/TodoTasks/static/js/main.988bd14b.chunk.js",
+    "main.js.map": "/TodoTasks/static/js/main.988bd14b.chunk.js.map",
     "runtime-main.js": "/TodoTasks/static/js/runtime-main.a8ea837b.js",
     "runtime-main.js.map": "/TodoTasks/static/js/runtime-main.a8ea837b.js.map",
-    "static/js/2.f0720402.chunk.js": "/TodoTasks/static/js/2.f0720402.chunk.js",
-    "static/js/2.f0720402.chunk.js.map": "/TodoTasks/static/js/2.f0720402.chunk.js.map",
+    "static/js/2.f08c6ed2.chunk.js": "/TodoTasks/static/js/2.f08c6ed2.chunk.js",
+    "static/js/2.f08c6ed2.chunk.js.map": "/TodoTasks/static/js/2.f08c6ed2.chunk.js.map",
     "index.html": "/TodoTasks/index.html",
     "service-worker.js": "/TodoTasks/service-worker.js",
     "service-worker.js.map": "/TodoTasks/service-worker.js.map",
     "static/css/main.dac183cf.chunk.css.map": "/TodoTasks/static/css/main.dac183cf.chunk.css.map",
-    "static/js/2.f0720402.chunk.js.LICENSE.txt": "/TodoTasks/static/js/2.f0720402.chunk.js.LICENSE.txt",
+    "static/js/2.f08c6ed2.chunk.js.LICENSE.txt": "/TodoTasks/static/js/2.f08c6ed2.chunk.js.LICENSE.txt",
     "static/media/bg.01705941.jpg": "/TodoTasks/static/media/bg.01705941.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.a8ea837b.js",
-    "static/js/2.f0720402.chunk.js",
+    "static/js/2.f08c6ed2.chunk.js",
     "static/css/main.dac183cf.chunk.css",
-    "static/js/main.1c5a6745.chunk.js"
+    "static/js/main.988bd14b.chunk.js"
   ]
 }
