@@ -14,7 +14,7 @@ export default function UserExperience(props) {
       <CardHeader
         sx={{ flex: "5" }}
         avatar={
-          <Avatar sx={{ bgcolor: "primary.dark" }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: "primary.dark" }} aria-label="Experience">
             <WorkIcon />
           </Avatar>
         }

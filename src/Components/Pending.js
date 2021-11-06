@@ -1,18 +1,13 @@
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
-import { red } from "@mui/material/colors";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
 import IconButton from "@mui/material/IconButton";
-import { useHistory } from 'react-router-dom';
 
 export default function Pending(props) {
-  const history = new useHistory();
-
-
   const handleApproval = () => {
     acceptFollowRequest();
     document.getElementById("pending_" + props.id).style.display = "none";
@@ -23,19 +18,15 @@ export default function Pending(props) {
     document.getElementById("pending_" + props.id).style.display = "none";
   };
 
-
   function acceptFollowRequest() {
     acceptFollowRequestAPI()
-      .then((accept_response) => {
-        console.log(accept_response);
-      })
+      .then()
       .catch((error) => {
         console.log(error.message);
       });
   }
 
   async function acceptFollowRequestAPI() {
-    const user1_id = localStorage.getItem("id");
     const user2_id = document.getElementById("user2_id").value;
     const authorization = localStorage.getItem("token");
 
@@ -61,16 +52,13 @@ export default function Pending(props) {
 
   function deleteFollowRequest() {
     deleteFollowRequestAPI()
-      .then((delete_response) => {
-        console.log(delete_response);
-      })
+      .then()
       .catch((error) => {
         console.log(error.message);
       });
   }
 
   async function deleteFollowRequestAPI() {
-    const user1_id = localStorage.getItem("id");
     const user2_id = document.getElementById("user2_id").value;
     const authorization = localStorage.getItem("token");
 
@@ -101,11 +89,10 @@ export default function Pending(props) {
     >
       <CardHeader
         sx={{ flex: "10" }}
-        style={{fontFamily:'Roboto'}}
+        style={{ fontFamily: "Roboto" }}
         avatar={
           <Avatar
-            sx={{ bgcolor: red[500] }}
-            aria-label="profile_pic"
+            aria-label="profile picture"
             src={props.picture}
           ></Avatar>
         }
@@ -114,7 +101,7 @@ export default function Pending(props) {
       <button hidden id="user2_id" value={props.id}></button>
       <Stack direction="row" sx={{ flex: "1" }}>
         <IconButton
-          style={{color:'#1976d2'}}
+          style={{ color: "#1976d2" }}
           aria-label="Approve"
           onClick={handleApproval}
         >

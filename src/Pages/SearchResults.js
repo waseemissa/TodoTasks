@@ -2,21 +2,20 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import Suggestion from "../../Components/Suggestion";
-import Pending from "../../Components/Pending";
+import Suggestion from "../Components/Suggestion";
+import Pending from "../Components/Pending";
 import Typography from "@mui/material/Typography";
-import UserCard from "../../Components/ProfileComponents/UserCard";
+import UserCard from "../Components/UserCard";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
-import UserEducation from "../../Components/ProfileComponents/UserEducation";
-import MainNavigation from "../../Components/Layout/MainNavigation";
 import { useState } from "react";
+import MainNavigation from "../Components/Layout/MainNavigation";
 import { useEffect } from "react";
 import { useHistory } from "react-router";
 
-function UserEducationPage() {
+function SearchResults() {
   const history = new useHistory();
-  const [educations, setEducations] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
 
@@ -25,47 +24,43 @@ function UserEducationPage() {
     if (is_authenticated === "false") {
       history.push("/");
     }
-    getUserEdcuation();
     getPendingRequests();
     getSuggestions();
+    getSearchResults();
   }, []);
 
-  function getUserEdcuation() {
-    getUserEdcuationAPI()
-      .then((education_response) => {
-        setEducations(education_response.education);
+  function getSearchResults() {
+    getSearchResultsAPI()
+      .then((search_response) => {
+        setSearchResults(search_response.search_results);
       })
       .catch((error) => {
         console.log(error.message);
       });
   }
 
-  async function getUserEdcuationAPI() {
-    const user_id = localStorage.getItem("todo_tasks_user_id");
+  async function getSearchResultsAPI() {
     const authorization = localStorage.getItem("token");
+    const search_value = localStorage.getItem("search_value");
 
-    const response = await fetch(
-      "https://todotasks.tk/api/auth/user-education",
-      {
-        method: "POST",
-        headers: { accepts: "application/json", Authorization: authorization },
-        body: new URLSearchParams({
-          user_id: user_id,
-        }),
-      }
-    );
+    const response = await fetch("https://todotasks.tk/api/auth/search", {
+      method: "POST",
+      headers: { accepts: "application/json", Authorization: authorization },
+      body: new URLSearchParams({
+        search_key: search_value,
+      }),
+    });
 
     if (!response.ok) {
       const message = "ERROR OCCURED";
       throw new Error(message);
     }
 
-    const education_response = await response.json();
-    return education_response;
+    const search_response = await response.json();
+    return search_response;
   }
 
   //pending Requests
-
   function getPendingRequests() {
     getPendingRequestsAPI()
       .then((pending_response) => {
@@ -97,7 +92,6 @@ function UserEducationPage() {
   }
 
   //Suggestions
-
   function getSuggestions() {
     getSuggestionsAPI()
       .then((suggestions_response) => {
@@ -127,6 +121,7 @@ function UserEducationPage() {
     const suggestions_response = await response.json();
     return suggestions_response;
   }
+
   return (
     <div style={{ height: "100vh", backgroundColor: "#f5f5f5" }}>
       <MainNavigation />
@@ -153,18 +148,22 @@ function UserEducationPage() {
                   color="black"
                   sx={{ maxWidth: "900px", fontFamily: "Roboto" }}
                 >
-                  Education
+                  Search Results
                 </Typography>
               </Box>
-              <Stack direction="column" spacing={2}>
-                {educations.map((education) => (
-                  <UserEducation
-                    id={education.id}
-                    degree={education.degree}
-                    major={education.major}
-                    university={education.university}
-                    year={education.year}
-                  ></UserEducation>
+
+              <Stack id="connections" direction="column" spacing={2}>
+                {searchResults.map((result) => (
+                  <Suggestion
+                    id={result.info.id}
+                    username={result.info.username}
+                    name={result.info.first_name + " " + result.info.last_name}
+                    picture={result.picture[0].picture_url}
+                    profession={result.info.profession}
+                    email={result.info.email}
+                    bio={result.info.bio}
+                    phone_number={result.info.phone_number}
+                  ></Suggestion>
                 ))}
               </Stack>
             </Container>
@@ -188,17 +187,12 @@ function UserEducationPage() {
                   {pendingRequests.map((pendingRequest) => (
                     <Pending
                       id={pendingRequest.info.id}
-                      username={pendingRequest.info.username}
                       name={
                         pendingRequest.info.first_name +
                         " " +
                         pendingRequest.info.last_name
                       }
                       picture={pendingRequest.picture[0].picture_url}
-                      profession={pendingRequest.info.profession}
-                      email={pendingRequest.info.email}
-                      bio={pendingRequest.info.bio}
-                      phone_number={pendingRequest.info.phone_number}
                     ></Pending>
                   ))}
                 </Stack>
@@ -245,4 +239,4 @@ function UserEducationPage() {
   );
 }
 
-export default UserEducationPage;
+export default SearchResults;

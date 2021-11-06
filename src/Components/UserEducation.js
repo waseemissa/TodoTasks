@@ -15,14 +15,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
-  border: '1px solid #1976d2',
-  borderRadius: '35px',
+  bgcolor: "background.paper",
+  border: "1px solid #1976d2",
+  borderRadius: "35px",
   boxShadow: 24,
   p: 4,
 };
@@ -56,9 +56,7 @@ export default function UserEducation(props) {
 
   function updateEducation() {
     updateEducationAPI()
-      .then((update_response) => {
-        console.log(update_response);
-      })
+      .then()
       .catch((error) => {
         console.log(error.message);
       });
@@ -67,7 +65,6 @@ export default function UserEducation(props) {
   async function updateEducationAPI() {
     const id = props.id;
     const authorization = localStorage.getItem("token");
-    console.log(id);
 
     const response = await fetch(
       "https://todotasks.tk/api/auth/update-education",
@@ -95,9 +92,7 @@ export default function UserEducation(props) {
 
   function deleteEducation() {
     deleteEducationAPI()
-      .then((delete_response) => {
-        console.log(delete_response);
-      })
+      .then()
       .catch((error) => {
         console.log(error.message);
       });
@@ -133,9 +128,9 @@ export default function UserEducation(props) {
     >
       <CardHeader
         sx={{ flex: "5" }}
-        style={{fontFamily:'Roboto'}}
+        style={{ fontFamily: "Roboto" }}
         avatar={
-          <Avatar sx={{ bgcolor: "primary.dark" }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: "primary.dark" }} aria-label="Education">
             <StarIcon />
           </Avatar>
         }
@@ -152,7 +147,7 @@ export default function UserEducation(props) {
       />
       <Stack sx={{ display: "flex", flexDirection: "row" }}>
         <IconButton
-          style={{color:'#1976d2'}}
+          style={{ color: "#1976d2" }}
           onClick={handleOpen}
           aria-label="Edit"
           component="span"

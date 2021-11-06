@@ -1,7 +1,5 @@
-import "./App.css";
 import * as React from "react";
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-
+import { Route, Switch } from "react-router-dom";
 import MainPage from "./Pages/MainPage";
 import MessagesPage from "./Pages/MessagesPage";
 import NotificationsPage from "./Pages/NotificationsPage";
@@ -16,26 +14,59 @@ import UserSkillsPage from "./Pages/Profile/UserSkillsPage";
 import UserFeed from "./Pages/Profile/UserFeed";
 import UserExperiencePage from "./Pages/Profile/UserExperiencePage";
 import ConnectionsPage from "./Pages/ConnectionsPage";
-import firebase from './firebase';
+import SearchResults from "./Pages/SearchResults";
+import firebase from "./firebase";
+import BlockedContacts from "./Pages/BlockedContacts";
+import { isIOS } from "react-device-detect";
 
 export default class App extends React.Component {
-
-  componentDidMount(){
-    const messaging = firebase.messaging();
-    Notification.requestPermission().then(()=>{
-      return messaging.getToken();
-    }).then(token =>{
-      localStorage.setItem('device_token', token);
-      console.log(token);
-    }).catch((error)=>{
-      console.log(error);
-    })
-
+  componentDidMount() {
+    if (!isIOS) {
+      const messaging = firebase.messaging();
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("./firebase-messaging-sw.js")
+          .then(function (registration) {
+            console.log(
+              "Registration successful, scope is:",
+              registration.scope
+            );
+            Notification.requestPermission().then(() => {
+              messaging
+                .getToken({
+                  vapidKey:
+                    "BPeIeKcMyJbJ6ag2MRhpHdSLOUvNvhPsJp6KXIrPFXllE8LcGx3Mfsm54SwXiir8YsmY_8wWjrOwmJadR-g10l4",
+                  serviceWorkerRegistration: registration,
+                })
+                .then((currentToken) => {
+                  if (currentToken) {
+                    console.log("current token for client: ", currentToken);
+                    localStorage.setItem("device_token", currentToken);
+                  } else {
+                    console.log(
+                      "No registration token available. Request permission to generate one."
+                    );
+                  }
+                })
+                .catch((err) => {
+                  console.log(
+                    "An error occurred while retrieving token. ",
+                    err
+                  );
+                });
+            });
+          })
+          .catch(function (err) {
+            console.log("Service worker registration failed, error:", err);
+          });
+      }
+    }
   }
-  render(){
+  render() {
     return (
       <div>
         <Switch>
+          {/* Routes for personal profile */}
           <Route path="/" exact>
             <LoginPage />
           </Route>
@@ -47,6 +78,9 @@ export default class App extends React.Component {
           </Route>
           <Route path="/connections">
             <ConnectionsPage />
+          </Route>
+          <Route path="/blocked">
+            <BlockedContacts />
           </Route>
           <Route path="/messages">
             <MessagesPage />
@@ -66,12 +100,15 @@ export default class App extends React.Component {
           <Route path="/user-experience">
             <ExperiencePage />
           </Route>
-  
-          {/* Routes for a specific user */}
+          <Route path="/search">
+            <SearchResults />
+          </Route>
+
+          {/* Routes for showing any user profile */}
           <Route path="/feed">
             <UserFeed />
           </Route>
-          <Route path="/education" >
+          <Route path="/education">
             <UserEducationPage />
           </Route>
           <Route path="/skills">
@@ -84,6 +121,4 @@ export default class App extends React.Component {
       </div>
     );
   }
-  
 }
-

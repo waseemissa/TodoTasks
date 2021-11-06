@@ -1,27 +1,17 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import Modal from '@mui/material/Modal';
-import { red } from '@mui/material/colors';
-import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import StarIcon from '@mui/icons-material/Star';
-import EditIcon from '@mui/icons-material/Edit';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import BlockIcon from '@mui/icons-material/Block';
-import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 
 
 export default function Connection(props) {
-  
+  const history = new useHistory();
 
   const handleUnfollow = () =>{
     unfollow();
@@ -35,10 +25,8 @@ export default function Connection(props) {
 
   //unfollow
   function unfollow(){
-    unfollowAPI().then(unfollow_response=>{
-      console.log(unfollow_response);
-      
-  }).catch(error => {
+    unfollowAPI().then()
+    .catch(error => {
     console.log(error.message);
   });
   
@@ -68,10 +56,8 @@ export default function Connection(props) {
 
   //block
   function block(){
-    blockAPI().then(block_response=>{
-      console.log(block_response);
-      
-  }).catch(error => {
+    blockAPI().then()
+    .catch(error => {
     console.log(error.message);
   });
   
@@ -98,22 +84,36 @@ export default function Connection(props) {
   const block_response = await response.json();
   return block_response;
   }
+
+  const handleClick = () => {
+    localStorage.setItem('todo_tasks_user_id', props.id);
+    localStorage.setItem('todo_tasks_user_name', props.name);
+    localStorage.setItem('todo_tasks_user_profession', props.profession);
+    localStorage.setItem('todo_tasks_user_picture', props.picture);
+    localStorage.setItem('todo_tasks_user_bio', props.bio);
+    localStorage.setItem('todo_tasks_user_email', props.email);
+    localStorage.setItem('todo_tasks_user_phone_number', props.phone_number);
+    localStorage.setItem('is_friend', 'true');
+    history.push('/feed/'+props.username);
+    window.location.reload();
+  }
   
 
   return (
     <Card id={"connection_"+props.id} sx={{display:'flex', flexDirection:'row', paddingTop:'5px'}}>
         <CardHeader sx={{flex:'5'}}
+        onClick={handleClick}
         avatar={
-          <Avatar aria-label="profile pic" src={props.picture}>
+          <Avatar aria-label="profile picture" src={props.picture}>
           </Avatar>
         }
         title={props.name}
         />
         <Stack sx={{display:'flex', flexDirection:'row'}}>
-        <IconButton onClick={handleUnfollow} color="error" aria-label="Edit" component="span" sx={{flex:'1'}}>
+        <IconButton onClick={handleUnfollow} color="error" aria-label="Unfollow" component="span" sx={{flex:'1'}}>
         <PersonRemoveIcon  />
         </IconButton>
-        <IconButton onClick={handleBlock} color="error"aria-label="Edit" component="span" sx={{flex:'1'}}>
+        <IconButton onClick={handleBlock} color="error"aria-label="Block" component="span" sx={{flex:'1'}}>
         <BlockIcon />
         </IconButton>
         </Stack>
