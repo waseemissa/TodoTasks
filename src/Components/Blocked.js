@@ -2,6 +2,7 @@ import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
+import Typography from "@mui/material/Typography";
 import CardHeader from "@mui/material/CardHeader";
 import IconButton from "@mui/material/IconButton";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
@@ -51,7 +52,13 @@ export default function Blocked(props) {
       <CardHeader
         sx={{ flex: "5" }}
         avatar={<Avatar aria-label="profile pic" src={props.picture}></Avatar>}
-        title={props.name}
+        title={
+          <Typography>
+            <h4>
+              {props.name}
+            </h4>
+          </Typography>
+        }
       />
       <Stack sx={{ display: "flex", flexDirection: "row" }}>
         <IconButton

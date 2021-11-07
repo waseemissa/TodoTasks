@@ -33,7 +33,7 @@ export default function RegisterPage() {
       .catch((error) => {
         console.log(error.message);
         alert(
-          "Registration fail, you should:\nFill all the fields \nBe at least 18 years old\nHave a unique email and username\nProvide a confirmed password of at least 6 characters"
+          "Please choose an option in the 'Are you a freelancer?' area, if that doesn't work try another username and email"
         );
       });
   }
@@ -74,129 +74,25 @@ export default function RegisterPage() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container style={{ backgroundColor: "#f5f5f5" }}>
-        <Grid
-          item
-          xs={12}
-          sm={12}
-          md={6}
-          sx={{ textAlign: "center", color: "white" }}
-          style={{
-            position: "relative",
-            height: "680px",
-            backgroundImage: `url(${background})`,
-          }}
-        >
-          <h1 style={{ color: "#1976d2", fontFamily: "Roboto" }}>Todo Tasks</h1>
-          <div
-            style={{
-              marginTop: "35px",
-              backgroundColor: "#1976d2",
-              borderRadius: "20px",
-              maxWidth: "50%",
-              float: "left",
-              marginLeft: "10px",
-              padding: "3px",
-            }}
-          >
-            <p style={{ fontSize: "13pt", fontFamily: "Roboto" }}>
-              What is the perfect platform for freelancing?
-            </p>
-          </div>
-          <div
-            style={{
-              marginTop: "35px",
-              backgroundColor: "#1976d2",
-              borderRadius: "20px",
-              maxWidth: "50%",
-              float: "right",
-              marginRight: "10px",
-              padding: "3px",
-            }}
-          >
-            <p style={{ fontSize: "13pt", fontFamily: "Roboto" }}>
-              Todo Tasks is a map for you if you're searching for a freelancer.
-            </p>
-          </div>
-          <div
-            style={{
-              marginTop: "10px",
-              maxWidth: "50%",
-              backgroundColor: "#1976d2",
-              borderRadius: "20px",
-              float: "right",
-              marginRight: "10px",
-              padding: "3px",
-            }}
-          >
-            <p style={{ fontSize: "13pt", fontFamily: "Roboto" }}>
-              And your home if you are a freelancer and you want to work
-              comfortably.
-            </p>
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              bottom: "0px",
-              display: "flex",
-              flexDirection: "row",
-              width: "100%",
-            }}
-          >
-            <div
-              style={{
-                flex: "8",
-                backgroundColor: "white",
-                border: "1px solid #1976d2",
-                borderRadius: "20px",
-                textAlign: "left",
-                margin: "10px",
-                paddingLeft: "10px",
-                height: "40px",
-              }}
-            >
-              <p style={{ color: "black", fontFamily: "Roboto" }}>
-                By Waseem Issa on Behalf of SE Factory
-              </p>
-            </div>
-            <div style={{ flex: "1", marginLeft: "-20px" }}>
-              <p
+<div style={{ height: "120vh", backgroundImage: `url(${background})`, marginTop:'-20px'}}>
+    <center><h1 style={{fontFamily: "Roboto", color:'#1976d2' }}>Todo Tasks</h1></center>
+    <center>
+              <Grid item xs
+                md={5}
+                xs={12}
                 style={{
-                  color: "#1976d2",
-                  fontSize: "10pt",
-                  marginBottom: "5px",
-                  paddingRight: "10px",
-                  paddingLeft: "10px",
-                }}
-              >
-                <SendIcon sx={{ width: "35px", height: "35px" }} />
-              </p>
-            </div>
-          </div>
-        </Grid>
-        <Grid item xs={12} sm={12} md={6} sx={{ textAlign: "center" }}>
-          <Box
-            component="form"
-            sx={{
-              "& .MuiTextField-root": { m: 1, width: "25ch" },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <center>
-              <div
-                style={{
-                  marginTop: "10px",
-                  marginBottom: "10px",
                   border: "1px solid #1976d2",
                   backgroundColor: "white",
                   borderRadius: "35px",
-                  width: "80%",
+                  marginTop: "20px",
+                  marginLeft: "15px",
+                  marginRight: "15px",
+                  marginBottom: "20px",
                   fontFamily: "Roboto",
                 }}
               >
                 <h1 style={{ fontFamily: "Roboto" }}>Registration</h1>
+                <form onSubmit={handleRegistration}>
                 <TextField
                   required
                   id="first_name"
@@ -204,7 +100,8 @@ export default function RegisterPage() {
                   label="First Name"
                   placeholder="John"
                   sx={{ fontFamily: "Roboto" }}
-                  style={{ width: "80%" }}
+                  style={{ width: "80%", marginTop: '15px' }}
+                  inputProps = {{ minLength: "3"}}
                 />
                 <TextField
                   required
@@ -212,7 +109,8 @@ export default function RegisterPage() {
                   type="text"
                   label="Last Name"
                   placeholder="Smith"
-                  style={{ width: "80%" }}
+                  style={{ width: "80%", marginTop: '15px' }}
+                  inputProps = {{ minLength: "3"}}
                 />
                 <TextField
                   required
@@ -220,7 +118,8 @@ export default function RegisterPage() {
                   type="text"
                   label="Username"
                   placeholder="john.smith"
-                  style={{ width: "80%" }}
+                  style={{ width: "80%", marginTop: '15px' }}
+                  inputProps = {{ minLength: "6"}}
                 />
                 <TextField
                   required
@@ -228,7 +127,7 @@ export default function RegisterPage() {
                   type="email"
                   label="Email Address"
                   placeholder="someone@example.com "
-                  style={{ width: "80%" }}
+                  style={{ width: "80%", marginTop: '15px' }}
                 />
                 <TextField
                   required
@@ -236,7 +135,8 @@ export default function RegisterPage() {
                   id="password"
                   label="Password"
                   placeholder="At least 6 characters"
-                  style={{ width: "80%" }}
+                  style={{ width: "80%", marginTop: '15px' }}
+                  inputProps = {{ minLength: "6"}}
                 />
                 <TextField
                   required
@@ -244,9 +144,10 @@ export default function RegisterPage() {
                   id="password_confirmation"
                   label="Confirm Password"
                   placeholder="Should match password"
-                  style={{ width: "80%" }}
+                  style={{ width: "80%", marginTop: '15px' }}
+                  inputProps = {{ minLength: "6"}}
                 />
-                <FormControl component="fieldset" sx={{ width: "80%" }}>
+                <FormControl component="fieldset" style={{ width: "80%", marginTop: '15px' }}>
                   <FormLabel component="legend">
                     Are you a freelancer?
                   </FormLabel>
@@ -273,23 +174,20 @@ export default function RegisterPage() {
                 </FormControl>
                 <Button
                   variant="contained"
-                  style={{ width: "80%" }}
+                  style={{ width: "80%", marginTop: '15px' }}
                   type="submit"
-                  onClick={handleRegistration}
                 >
                   Sign Up
                 </Button>
+                </form>
                 <p>
                   Already on Todo Tasks?{" "}
                   <Link component={RouterLink} to="/">
-                    Login.
+                    Login
                   </Link>{" "}
                 </p>
-              </div>
-            </center>
-          </Box>
-        </Grid>
-      </Grid>
-    </Box>
+              </Grid>
+        </center>
+        </div>
   );
 }

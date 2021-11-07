@@ -21,6 +21,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import { useHistory } from "react-router";
+import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import DateAdapter from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 const style = {
   position: "absolute",
@@ -46,6 +49,7 @@ function ProjectsPage() {
   const [projects, setProjects] = useState([]);
   const [freelancers, setFreelancers] = useState([]);
   const [freelancerId, setFreelancerId] = useState("");
+  const [date, setDate] = useState(formatDate(new Date()));
 
   useEffect(() => {
     const is_authenticated = localStorage.getItem("is_authenticated");
@@ -62,9 +66,29 @@ function ProjectsPage() {
     setFreelancerId(event.target.value);
   };
 
+  function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
+  const handleDateChange = (newValue)=>{
+    setDate(formatDate(newValue));
+    console.log(date);
+  }
+
   const handleSave = () => {
-    handleClose();
     createProject();
+    getProjects();
+    handleClose();
   };
 
   //get freelancers
@@ -114,8 +138,9 @@ function ProjectsPage() {
     const freelancer_user_id = freelancerId;
     const description = document.getElementById("description").value;
     const price = document.getElementById("price").value;
-    const due_date = document.getElementById("due_date").value;
+    const due_date = date;
     const authorization = localStorage.getItem("token");
+    console.log("hello");
 
     const response = await fetch(
       "https://todotasks.tk/api/auth/create-project",
@@ -123,10 +148,10 @@ function ProjectsPage() {
         method: "POST",
         headers: { accepts: "application/json", Authorization: authorization },
         body: new URLSearchParams({
-          freelancer_user_id: freelancer_user_id,
-          description: description,
-          price: price,
-          due_date: due_date,
+          'freelancer_user_id': freelancer_user_id,
+          'description': description,
+          'price': price,
+          'due_date': due_date,
         }),
       }
     );
@@ -269,20 +294,23 @@ function ProjectsPage() {
                 </IconButton>
               </Box>
               <Modal open={open} onClose={handleClose} aria-labelledby="title">
-                <Box component="form" sx={style} noValidate autoComplete="off">
+                <Box sx={style} noValidate autoComplete="off">
+                  <form onSubmit={handleSave}>
                   <Typography id="title" variant="h6">
                     Start Project
                   </Typography>
                   <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  <LocalizationProvider dateAdapter={DateAdapter}>
                     <InputLabel
                       id="demo-simple-select-label"
                       sx={{ marginTop: "15px" }}
                     >
-                      Freelancer
+                      Select a Followed Freelancer
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
+                      required
                       value={freelancerId}
                       onChange={handleChange}
                     >
@@ -302,8 +330,10 @@ function ProjectsPage() {
                     </InputLabel>
                     <TextField
                       id="description"
+                      required
+                      multiline
                       variant="outlined"
-                      placeholder="What is your project?"
+                      placeholder="Describe your project here"
                     ></TextField>
                     <InputLabel
                       id="demo-simple-select-label"
@@ -314,6 +344,7 @@ function ProjectsPage() {
                     <TextField
                       id="price"
                       variant="outlined"
+                      required
                       placeholder="Amount in USD"
                     ></TextField>
                     <InputLabel
@@ -322,19 +353,24 @@ function ProjectsPage() {
                     >
                       Due Date
                     </InputLabel>
-                    <TextField
-                      id="due_date"
-                      variant="outlined"
-                      placeholder="Deadline"
-                    ></TextField>
+                    
+                    <DesktopDatePicker
+                    id="due_date"
+                    value={date}
+                    onChange={handleDateChange}
+                    minDate={new Date()}
+                    renderInput={(params) => <TextField {...params} />}
+                    />
                     <Button
                       sx={{ marginTop: "15px" }}
                       variant="contained"
-                      onClick={handleSave}
+                      type="submit"
                     >
                       Save
                     </Button>
+                    </LocalizationProvider>
                   </Box>
+                  </form>
                 </Box>
               </Modal>
               <Stack direction="column" spacing={2}>

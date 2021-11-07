@@ -55,27 +55,48 @@ function MainPage() {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
 
-  const handleEditBio = () => {
-    setBio(document.getElementById("bio").value);
+  const handleEditBio = (e) => {
+    if(e.target.value=="" || e.target.value=="Tell the world about yourself" ){
+      setBio("");
+      localStorage.setItem("bio", "Tell the world about yourself");
+      document.getElementById("bio_p").innerHTML = "Tell the world about yourself";
+    }
+    else{
+    setBio(e.target.value);
     document.getElementById("bio_p").innerHTML =
-      document.getElementById("bio").value;
-    localStorage.setItem("bio", bio);
+      e.target.value;
+    localStorage.setItem("bio", e.target.value);
+    }
   };
 
-  const handleEditProfession = () => {
-    setProfession(document.getElementById("profession").value);
-    document.getElementById("profession_p").innerHTML =
-      document.getElementById("profession").value;
-    document.getElementById("profession_p_card").innerHTML =
-      document.getElementById("profession").value;
-    localStorage.setItem("profession", profession);
+  const handleEditProfession = (e) => {
+    if(e.target.value=="" || e.target.value=="Add your profession" ){
+      setProfession("");
+      localStorage.setItem("profession", "");
+      document.getElementById("profession_p").innerHTML ="Add your profession";
+    }
+    else{
+      setProfession(e.target.value);
+      document.getElementById("profession_p").innerHTML =
+        e.target.value;
+      document.getElementById("profession_p_card").innerHTML =
+        e.target.value;
+      localStorage.setItem("profession", e.target.value);
+    }
   };
 
-  const handleEditPhoneNumber = () => {
-    setPhoneNumber(document.getElementById("phone_number").value);
-    document.getElementById("phone_p").innerHTML =
-      document.getElementById("phone_number").value;
-    localStorage.setItem("phone_number", phone_number);
+  const handleEditPhoneNumber = (e) => {
+    if(e.target.value=="" || e.target.value=="Add your phone number" ){
+      setPhoneNumber("");
+      localStorage.setItem("phone_number", "Add your phone number");
+      document.getElementById("phone_p").innerHTML = "Add your phone number";
+    }
+    else{
+      setPhoneNumber(e.target.value);
+      document.getElementById("phone_p").innerHTML =
+      e.target.value;
+      localStorage.setItem("phone_number", e.target.value);
+    }
   };
 
   const handleEdit = () => {
@@ -87,6 +108,24 @@ function MainPage() {
     const is_authenticated = localStorage.getItem("is_authenticated");
     if (is_authenticated === "false") {
       history.push("/");
+    }
+    if(localStorage.getItem("bio")=="null"){
+      setBio("Tell The world about yourself");
+    }
+    else{
+      setBio(localStorage.getItem("bio"));
+    }
+    if(localStorage.getItem("phone_number")=="null"){
+      setPhoneNumber("Add your phone number");
+    }
+    else{
+      setPhoneNumber(localStorage.getItem("phone_number"))
+    }
+    if(localStorage.getItem("bio")=="null"){
+      setProfession("Add your profession");
+    }
+    else{
+      setProfession(localStorage.getItem("profession"));
     }
     getPendingRequests();
     getSuggestions();
@@ -107,9 +146,9 @@ function MainPage() {
       method: "POST",
       headers: { accepts: "application/json", Authorization: authorization },
       body: new URLSearchParams({
-        bio: bio,
-        profession: profession,
-        phone_number: phone_number,
+        'bio': bio,
+        'profession': profession,
+        'phone_number': phone_number,
       }),
     });
 
@@ -223,7 +262,8 @@ function MainPage() {
                 </IconButton>
               </Box>
               <Modal open={open} onClose={handleClose} aria-labelledby="title">
-                <Box component="form" sx={style} noValidate autoComplete="off">
+                <Box sx={style} noValidate autoComplete="off">
+                  <form onSubmit={handleEdit}>
                   <Typography id="title" variant="h6">
                     Edit Info
                   </Typography>
@@ -250,16 +290,18 @@ function MainPage() {
                       label="Bio"
                       variant="outlined"
                       value={bio}
+                      multiline
                       onChange={handleEditBio}
                     ></TextField>
                     <Button
                       sx={{ marginTop: "15px" }}
                       variant="contained"
-                      onClick={handleEdit}
+                      type="submit"
                     >
                       Save
                     </Button>
                   </Box>
+                  </form>
                 </Box>
               </Modal>
               <Stack direction="column" spacing={2}>

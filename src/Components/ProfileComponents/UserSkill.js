@@ -2,6 +2,7 @@ import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
+import Typography from "@mui/material/Typography";
 import StarIcon from "@mui/icons-material/Star";
 
 export default function UserSkill(props) {
@@ -17,7 +18,13 @@ export default function UserSkill(props) {
             <StarIcon />
           </Avatar>
         }
-        title={props.title}
+        title={
+          <Typography>
+            <h4>
+            {props.title}
+            </h4>
+          </Typography>
+        }
       />
     </Card>
   );

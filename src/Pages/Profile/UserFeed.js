@@ -21,9 +21,9 @@ import { useHistory } from "react-router";
 
 function UserFeed() {
   const history = new useHistory();
-  const bio = localStorage.getItem("todo_tasks_user_bio");
+  const [bio, setBio] = useState('');
   const email = localStorage.getItem("todo_tasks_user_email");
-  const phone_number = localStorage.getItem("todo_tasks_user_phone_number");
+  const [phone_number, setPhoneNumber] = useState('');
   const [pendingRequests, setPendingRequests] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
 
@@ -31,6 +31,18 @@ function UserFeed() {
     const is_authenticated = localStorage.getItem("is_authenticated");
     if (is_authenticated === "false") {
       history.push("/");
+    }
+    if(localStorage.getItem("todo_tasks_user_bio")=="null"){
+      setBio("Not added yet")
+    }
+    else{
+      setBio(localStorage.getItem("todo_tasks_user_bio"));
+    }
+    if(localStorage.getItem("todo_tasks_user_phone_number")=="null"){
+      setPhoneNumber("Not added yet");
+    }
+    else{
+      setPhoneNumber(localStorage.getItem("todo_tasks_user_phone_number"));
     }
     getPendingRequests();
     getSuggestions();

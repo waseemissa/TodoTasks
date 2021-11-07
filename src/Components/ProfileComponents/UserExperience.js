@@ -6,6 +6,21 @@ import CardHeader from "@mui/material/CardHeader";
 import WorkIcon from "@mui/icons-material/Work";
 
 export default function UserExperience(props) {
+
+  function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [day, month, year].join('-');
+}
+
   return (
     <Card
       id={props.id}
@@ -20,11 +35,11 @@ export default function UserExperience(props) {
         }
         title={
           <Typography>
-            <p>
+            <h4>
               {props.position} at {props.company}
-            </p>
+            </h4>
             <p>
-              From {props.start_date} till {props.end_date}
+              From {formatDate(props.start_date)} till {formatDate(props.end_date)}
             </p>
           </Typography>
         }

@@ -13,6 +13,10 @@ import StarIcon from "@mui/icons-material/Star";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
+import { useEffect } from "react";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
 
 const style = {
   position: "absolute",
@@ -35,14 +39,24 @@ export default function UserEducation(props) {
   const [university, setUniversity] = useState(props.university);
   const [major, setMajor] = useState(props.major);
   const [year, setYear] = useState(props.year);
+  const [years, setYears] = useState([]);
 
-  const handleEditDegree = () =>
-    setDegree(document.getElementById("degree").value);
-  const handleEditMajor = () =>
-    setMajor(document.getElementById("major").value);
-  const handleEditUniversity = () =>
-    setUniversity(document.getElementById("university").value);
-  const handleEditYear = () => setYear(document.getElementById("year").value);
+  const handleEditDegree = (e) => {
+    setDegree(e.target.value);
+  }
+  const handleEditMajor = (e) => {
+    setMajor(e.target.value);
+  }
+  const handleEditUniversity = (e) => {
+    setUniversity(e.target.value);
+  }
+  const handleEditYear = (e) => {
+    setYear(e.target.value);
+  }
+
+  useEffect(() => {
+    populateYears();
+  },[]);
 
   const handleDelete = () => {
     deleteEducation();
@@ -60,6 +74,20 @@ export default function UserEducation(props) {
       .catch((error) => {
         console.log(error.message);
       });
+  }
+
+  const populateYears = () => {
+    const today = new Date();
+    const max_year = today.getFullYear();
+
+    const years_select = [];
+
+
+    for (var i = 1990 ; i <= max_year; i++){
+       years_select[i] = i;
+    }
+    setYears(years_select);
+
   }
 
   async function updateEducationAPI() {
@@ -136,9 +164,9 @@ export default function UserEducation(props) {
         }
         title={
           <Typography>
-            <p>
+            <h4>
               {degree} in {major}
-            </p>
+            </h4>
             <p>
               {university} ({year})
             </p>
@@ -166,53 +194,87 @@ export default function UserEducation(props) {
         </IconButton>
       </Stack>
       <Modal open={open} onClose={handleClose} aria-labelledby="title">
-        <Box component="form" sx={style} noValidate autoComplete="off">
-          <Typography id="title" variant="h6">
-            Edit Education
-          </Typography>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <TextField
-              sx={{ marginTop: "15px" }}
-              id="degree"
-              label="Degree"
-              variant="outlined"
-              value={degree}
-              onChange={handleEditDegree}
-            ></TextField>
-            <TextField
-              sx={{ marginTop: "15px" }}
-              id="major"
-              label="Major"
-              variant="outlined"
-              value={major}
-              onChange={handleEditMajor}
-            ></TextField>
-            <TextField
-              sx={{ marginTop: "15px" }}
-              id="university"
-              label="University"
-              variant="outlined"
-              value={university}
-              onChange={handleEditUniversity}
-            ></TextField>
-            <TextField
-              sx={{ marginTop: "15px" }}
-              id="year"
-              label="Year"
-              variant="outlined"
-              value={year}
-              onChange={handleEditYear}
-            ></TextField>
-            <Button
-              sx={{ marginTop: "15px" }}
-              variant="contained"
-              onClick={handleUpdate}
-            >
-              Save
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+                <Box sx={style} noValidate autoComplete="off">
+                  <form onSubmit={handleUpdate}>
+                  <Typography id="title" variant="h6">
+                    Edit Education
+                  </Typography>
+                  <Box sx={{ display: "flex", flexDirection: "column" }}>
+                    <InputLabel
+                      sx={{ marginTop: "15px" }}
+                    >
+                      Degree
+                    </InputLabel>
+                    <Select
+                      id="degree"
+                      required
+                      value={degree}
+                      onChange={handleEditDegree}
+                    >                      
+                        <MenuItem value="Associate Degree">
+                          Associate Degree
+                        </MenuItem>
+                        <MenuItem value="Bachelor's Degree">
+                          Bachelor's Degree
+                        </MenuItem>
+                        <MenuItem value="Master's Degree">
+                          Master's Degree
+                        </MenuItem>
+                        <MenuItem value="Doctoral Degree">
+                          Doctoral Degree
+                        </MenuItem>
+                    </Select>
+                    <InputLabel
+                      sx={{ marginTop: "15px" }}
+                    >
+                      Major
+                    </InputLabel>
+                    <TextField
+                      id="major"
+                      required
+                      value={major}
+                      onChange={handleEditMajor}
+                      variant="outlined"
+                    ></TextField>
+                    <InputLabel
+                      sx={{ marginTop: "15px" }}
+                    >
+                      University
+                    </InputLabel>
+                    <TextField
+                      id="university"
+                      required
+                      value={university}
+                      onChange={handleEditUniversity}
+                      variant="outlined"
+                    ></TextField>
+                    <InputLabel
+                      sx={{ marginTop: "15px" }}
+                    >
+                      Graduation Year
+                    </InputLabel>
+                    <Select
+                      id="year"
+                      required
+                      value={year}
+                      onChange={handleEditYear}
+                    >
+                      {years.map((year) => (
+                        <MenuItem value={year}
+                        >{year}</MenuItem>
+                      ))}
+                    </Select>
+                    <Button
+                      sx={{ marginTop: "15px" }}
+                      variant="contained"
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </Box>
+                  </form>
+                </Box>
+              </Modal>
     </Card>
   );
 }

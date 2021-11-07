@@ -117,7 +117,13 @@ export default function UserSkill(props) {
             <StarIcon />
           </Avatar>
         }
-        title={title}
+        title={
+          <Typography>
+            <h4>
+            {title}
+            </h4>
+          </Typography>
+        }
       />
       <Stack sx={{ display: "flex", flexDirection: "row" }}>
         <IconButton
@@ -140,7 +146,8 @@ export default function UserSkill(props) {
         </IconButton>
       </Stack>
       <Modal open={open} onClose={handleClose} aria-labelledby="title">
-        <Box component="form" sx={style} noValidate autoComplete="off">
+        <Box sx={style} noValidate autoComplete="off">
+          <form onSubmit={handleUpdate}>
           <Typography id="title" variant="h6">
             Edit Skill
           </Typography>
@@ -148,19 +155,23 @@ export default function UserSkill(props) {
             <TextField
               sx={{ marginTop: "15px" }}
               id="skill_title"
-              label="Title"
+              label="Skill"
+              required
               variant="outlined"
+              placeholder="Write your skill"
               value={title}
               onChange={handleEditTitle}
+              inputProps = {{ minLength: "3"}}
             ></TextField>
             <Button
               sx={{ marginTop: "15px" }}
               variant="contained"
-              onClick={handleUpdate}
+              type="submit"
             >
               Save
             </Button>
           </Box>
+          </form>
         </Box>
       </Modal>
     </Card>

@@ -33,8 +33,13 @@ export default function UserCard() {
   useEffect(() => {
     setId(localStorage.getItem("todo_tasks_user_id"));
     setName(localStorage.getItem("todo_tasks_user_name"));
-    setProfession(localStorage.getItem("todo_tasks_user_profession"));
     setPicture(localStorage.getItem("todo_tasks_user_picture"));
+    if(localStorage.getItem("todo_tasks_user_profession")=="null"){
+      setProfession("");
+    }
+    else{
+      setProfession(localStorage.getItem("todo_tasks_user_profession"));
+    }
 
     const isFriend = localStorage.getItem("is_friend");
     if (isFriend == "true") {

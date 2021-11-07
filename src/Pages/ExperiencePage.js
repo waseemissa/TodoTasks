@@ -14,16 +14,20 @@ import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import { useState } from "react";
+import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 import MainNavigation from "../Components/Layout/MainNavigation";
 import { useEffect } from "react";
 import { useHistory } from "react-router";
+import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import DateAdapter from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
-  transform: "translate(-50%, -50%)",
+  transform: "translate(-50%, -45%)",
   width: 400,
   bgcolor: "background.paper",
   border: "1px solid #1976d2",
@@ -40,6 +44,8 @@ function ExperiencePage() {
   const [experiences, setExperiences] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
+  const [start_date, setStartDate] = useState(formatDate(new Date("11-02-2012")));
+  const [end_date, setEndDate] = useState(formatDate(new Date()));
 
   useEffect(() => {
     const is_authenticated = localStorage.getItem("is_authenticated");
@@ -84,7 +90,7 @@ function ExperiencePage() {
 
   function addExperience() {
     addExperienceAPI()
-      .then(() => {
+      .then(()=>{
         getUserExperience();
       })
       .catch((error) => {
@@ -95,18 +101,16 @@ function ExperiencePage() {
   async function addExperienceAPI() {
     const position = document.getElementById("position").value;
     const company = document.getElementById("company").value;
-    const start_date = document.getElementById("start_date").value;
-    const end_date = document.getElementById("end_date").value;
     const authorization = localStorage.getItem("token");
 
     const response = await fetch("https://todotasks.tk/api/auth/add-job", {
       method: "POST",
       headers: { accepts: "application/json", Authorization: authorization },
       body: new URLSearchParams({
-        position: position,
-        company: company,
-        start_date: start_date,
-        end_date: end_date,
+        'position': position,
+        'company': company,
+        'start_date': start_date,
+        'end_date': end_date,
       }),
     });
 
@@ -181,8 +185,31 @@ function ExperiencePage() {
     return suggestions_response;
   }
 
+  function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
+  const handleStartDateChange = (newValue)=>{
+    setStartDate(formatDate(newValue));
+  }
+
+  const handleEndDateChange = (newValue)=>{
+    setEndDate(formatDate(newValue));
+  }
+
   const handleSave = () => {
     addExperience();
+    getUserExperience();
     handleClose();
   };
 
@@ -225,43 +252,71 @@ function ExperiencePage() {
                 </IconButton>
               </Box>
               <Modal open={open} onClose={handleClose} aria-labelledby="title">
-                <Box component="form" sx={style} noValidate autoComplete="off">
+                <Box  sx={style} noValidate autoComplete="off">
+                  <form onSubmit={handleSave}>
                   <Typography id="title" variant="h6">
                     Add Experience
                   </Typography>
-                  <Box sx={{ display: "flex", flexDirection: "column" }}>
-                    <TextField
+                  <Box sx={{ display: "flex", flexDirection: "column"}}>
+                  <LocalizationProvider dateAdapter={DateAdapter}>
+                    <InputLabel
                       sx={{ marginTop: "15px" }}
+                    >
+                      Position
+                    </InputLabel>
+                    <TextField
                       id="position"
-                      label="Position"
                       variant="outlined"
+                      required
                     ></TextField>
-                    <TextField
+                    <InputLabel
                       sx={{ marginTop: "15px" }}
+                    >
+                      Company
+                    </InputLabel>
+                    <TextField
                       id="company"
-                      label="Company"
                       variant="outlined"
+                      required
                     ></TextField>
-                    <TextField
+                    <InputLabel
                       sx={{ marginTop: "15px" }}
-                      id="start_date"
-                      label="Start Date"
-                      variant="outlined"
-                    ></TextField>
-                    <TextField
+                    >
+                      Start Date
+                    </InputLabel>
+                    <DesktopDatePicker
+                    id="start_date"
+                    required
+                    value={start_date}
+                    onChange={handleStartDateChange}
+                    maxDate={new Date()}
+                    helperText="Please enter start date"
+                    renderInput={(params) => <TextField {...params} />}
+                    />
+                    <InputLabel
                       sx={{ marginTop: "15px" }}
-                      id="end_date"
-                      label="End Date"
-                      variant="outlined"
-                    ></TextField>
+                    >
+                      End Date
+                    </InputLabel>
+                    <DesktopDatePicker
+                    required
+                    id="end_date"
+                    value={end_date}
+                    onChange={handleEndDateChange}
+                    maxDate={new Date()}
+                    helperText="Please enter end date"
+                    renderInput={(params) => <TextField {...params} />}
+                    />
                     <Button
                       sx={{ marginTop: "15px" }}
                       variant="contained"
-                      onClick={handleSave}
+                      type="submit"
                     >
                       Save
                     </Button>
+                    </LocalizationProvider>
                   </Box>
+                  </form>
                 </Box>
               </Modal>
               <Stack direction="column" spacing={2}>

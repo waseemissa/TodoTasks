@@ -46,7 +46,7 @@ export default function LoginPage() {
       })
       .catch((error) => {
         alert(
-          "Please Check If you're entering the correct email and password!"
+          "Please check your credentials!"
         );
         console.log(error);
       });
@@ -80,136 +80,31 @@ export default function LoginPage() {
     login();
   };
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container style={{ backgroundColor: "#f5f5f5" }}>
-        <Grid
-          item
-          xs={12}
-          sm={12}
-          md={6}
-          sx={{ textAlign: "center", color: "white" }}
-          style={{
-            position: "relative",
-            height: "100vh",
-            backgroundImage: `url(${background})`,
-          }}
-        >
-          <h1 style={{ color: "#1976d2" }}>Todo Tasks</h1>
-          <div
-            style={{
-              marginTop: "35px",
-              backgroundColor: "#1976d2",
-              borderRadius: "20px",
-              marginLeft: "10px",
-              maxWidth: "50%",
-              float: "left",
-              padding: "3px",
-            }}
-          >
-            <p style={{ fontSize: "13pt", fontFamily: "Roboto" }}>
-              What is the perfect platform for freelancing?
-            </p>
-          </div>
-          <div
-            style={{
-              marginTop: "35px",
-              backgroundColor: "#1976d2",
-              borderRadius: "20px",
-              maxWidth: "50%",
-              float: "right",
-              marginRight: "10px",
-              padding: "3px",
-            }}
-          >
-            <p style={{ fontSize: "13pt", fontFamily: "Roboto" }}>
-              Todo Tasks is a map for you if you're searching for a freelancer.
-            </p>
-          </div>
-          <div
-            style={{
-              marginTop: "10px",
-              maxWidth: "50%",
-              backgroundColor: "#1976d2",
-              borderRadius: "20px",
-              float: "right",
-              marginRight: "10px",
-              padding: "3px",
-            }}
-          >
-            <p style={{ fontSize: "13pt", fontFamily: "Roboto" }}>
-              And your home if you are a freelancer and you want to work
-              comfortably.
-            </p>
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              bottom: "0px",
-              display: "flex",
-              flexDirection: "row",
-              width: "100%",
-            }}
-          >
-            <div
-              style={{
-                flex: "8",
-                backgroundColor: "white",
-                border: "1px solid #1976d2",
-                borderRadius: "20px",
-                textAlign: "left",
-                margin: "10px",
-                paddingLeft: "10px",
-                height: "40px",
-              }}
-            >
-              <p style={{ color: "black", fontFamily: "Roboto" }}>
-                By Waseem Issa on Behalf of SE Factory
-              </p>
-            </div>
-            <div style={{ flex: "1", marginLeft: "-20px" }}>
-              <p
-                style={{
-                  color: "#1976d2",
-                  fontSize: "10pt",
-                  marginBottom: "5px",
-                  paddingRight: "10px",
-                  paddingLeft: "10px",
-                }}
-              >
-                <SendIcon sx={{ width: "35px", height: "35px" }} />
-              </p>
-            </div>
-          </div>
-        </Grid>
-        <Grid item xs={12} sm={12} md={6} sx={{ textAlign: "center" }}>
-          <Box
-            component="form"
-            xs={{ marginBottom: "10px" }}
-            sx={{
-              "& .MuiTextField-root": { m: 1, width: "25ch" },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <center>
-              <div
+    <div style={{ height: "100vh", backgroundImage: `url(${background})`, marginTop:'-20px'}}>
+    <center><h1 style={{fontFamily: "Roboto", color:'#1976d2' }}>Todo Tasks</h1></center>
+    <center>
+              <Grid item xs
+                md={5}
+                xs={12}
                 style={{
                   border: "1px solid #1976d2",
                   backgroundColor: "white",
                   borderRadius: "35px",
                   marginTop: "100px",
-                  width: "80%",
+                  marginLeft: "15px",
+                  marginRight: "15px",
                   fontFamily: "Roboto",
                 }}
               >
                 <h1 style={{ fontFamily: "Roboto" }}>Login</h1>
+                <form onSubmit={handleLogin}>
                 <TextField
                   required
                   type="email"
                   id="email"
                   label="Email Address"
                   placeholder="someone@example.com "
-                  style={{ width: "80%" }}
+                  style={{ width: "80%", marginTop: '15px' }}
                 />
                 <TextField
                   required
@@ -217,26 +112,25 @@ export default function LoginPage() {
                   id="password"
                   label="Password"
                   placeholder="your password"
-                  style={{ width: "80%" }}
+                  style={{ width: "80%", marginTop: '15px' }}
+                  inputProps = {{ minLength: "6"}}
                 />
                 <Button
                   variant="contained"
-                  style={{ width: "80%" }}
-                  onClick={handleLogin}
+                  style={{ width: "80%", marginTop: '15px' }}
+                  type="submit"
                 >
                   Login
                 </Button>
+                </form>
                 <p>
                   New to Todo Tasks?{" "}
                   <Link component={RouterLink} to="/register">
-                    Register.
+                    Register
                   </Link>{" "}
                 </p>
-              </div>
-            </center>
-          </Box>
-        </Grid>
-      </Grid>
-    </Box>
+              </Grid>
+        </center>
+        </div>
   );
 }

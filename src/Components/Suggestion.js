@@ -3,6 +3,7 @@ import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useHistory } from "react-router-dom";
 
@@ -70,7 +71,10 @@ export default function Suggestion(props) {
         avatar={
           <Avatar src={props.picture} aria-label="Profile Picture"></Avatar>
         }
-        title={props.name}
+        title={
+        <Typography>
+        <h4>{props.name}</h4>
+        </Typography>}
       />
       <IconButton
         style={{ color: "#1976d2" }}

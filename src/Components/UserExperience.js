@@ -13,12 +13,16 @@ import WorkIcon from "@mui/icons-material/Work";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
+import InputLabel from "@mui/material/InputLabel";
+import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import DateAdapter from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
-  transform: "translate(-50%, -50%)",
+  transform: "translate(-50%, -45%)",
   width: 400,
   bgcolor: "background.paper",
   border: "1px solid #1976d2",
@@ -40,10 +44,10 @@ export default function UserExperience(props) {
     setPosition(document.getElementById("position").value);
   const handleEditCompany = () =>
     setCompany(document.getElementById("company").value);
-  const handleEditStartDate = () =>
-    setStartDate(document.getElementById("start_date").value);
-  const handleEditEndDate = () =>
-    setEndDate(document.getElementById("end_date").value);
+  const handleEditStartDate = (newValue) =>
+    setStartDate(formatNewDate(newValue));
+  const handleEditEndDate = (newValue) =>
+    setEndDate(formatNewDate(newValue));
 
   const handleDelete = () => {
     deleteExperience();
@@ -62,6 +66,34 @@ export default function UserExperience(props) {
         console.log(error.message);
       });
   }
+
+  function formatDisplayDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [day, month, year].join('-');
+  }
+
+  function formatNewDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
 
   async function updateExperienceAPI() {
     const id = props.id;
@@ -132,11 +164,14 @@ export default function UserExperience(props) {
         }
         title={
           <Typography>
-            <p>
+            <h4>
               {position} at {company}
+            </h4>
+            <p>
+              From {formatDisplayDate(start_date)}
             </p>
             <p>
-              From {start_date} till {end_date}
+              Till {formatDisplayDate(end_date)}
             </p>
           </Typography>
         }
@@ -162,53 +197,77 @@ export default function UserExperience(props) {
         </IconButton>
       </Stack>
       <Modal open={open} onClose={handleClose} aria-labelledby="title">
-        <Box component="form" sx={style} noValidate autoComplete="off">
-          <Typography id="title" variant="h6">
-            Edit Experience
-          </Typography>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <TextField
-              sx={{ marginTop: "15px" }}
-              id="position"
-              label="Position"
-              variant="outlined"
-              value={position}
-              onChange={handleEditPosition}
-            ></TextField>
-            <TextField
-              sx={{ marginTop: "15px" }}
-              id="company"
-              label="Company"
-              variant="outlined"
-              value={company}
-              onChange={handleEditCompany}
-            ></TextField>
-            <TextField
-              sx={{ marginTop: "15px" }}
-              id="start_date"
-              label="Start Date"
-              variant="outlined"
-              value={start_date}
-              onChange={handleEditStartDate}
-            ></TextField>
-            <TextField
-              sx={{ marginTop: "15px" }}
-              id="end_date"
-              label="End Date"
-              variant="outlined"
-              value={end_date}
-              onChange={handleEditEndDate}
-            ></TextField>
-            <Button
-              sx={{ marginTop: "15px" }}
-              variant="contained"
-              onClick={handleUpdate}
-            >
-              Save
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+                <Box  sx={style} noValidate autoComplete="off">
+                  <form onSubmit={handleUpdate}>
+                  <Typography id="title" variant="h6">
+                    Edit Experience
+                  </Typography>
+                  <Box sx={{ display: "flex", flexDirection: "column"}}>
+                  <LocalizationProvider dateAdapter={DateAdapter}>
+                    <InputLabel
+                      sx={{ marginTop: "15px" }}
+                    >
+                      Position
+                    </InputLabel>
+                    <TextField
+                      id="position"
+                      variant="outlined"
+                      value={position}
+                      onChange={handleEditPosition}
+                      required
+                    ></TextField>
+                    <InputLabel
+                      sx={{ marginTop: "15px" }}
+                    >
+                      Company
+                    </InputLabel>
+                    <TextField
+                      id="company"
+                      variant="outlined"
+                      value={company}
+                      onChange={handleEditCompany}
+                      required
+                    ></TextField>
+                    <InputLabel
+                      sx={{ marginTop: "15px" }}
+                    >
+                      Start Date
+                    </InputLabel>
+                    <DesktopDatePicker
+                    id="start_date"
+                    required
+                    value={start_date}
+                    onChange={handleEditStartDate}
+                    maxDate={new Date()}
+                    helperText="Please enter start date"
+                    renderInput={(params) => <TextField {...params} />}
+                    />
+                    <InputLabel
+                      sx={{ marginTop: "15px" }}
+                    >
+                      End Date
+                    </InputLabel>
+                    <DesktopDatePicker
+                    required
+                    id="end_date"
+                    value={end_date}
+                    onChange={handleEditEndDate}
+                    maxDate={new Date()}
+                    helperText="Please enter end date"
+                    renderInput={(params) => <TextField {...params} />}
+                    />
+                    <Button
+                      sx={{ marginTop: "15px" }}
+                      variant="contained"
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                    </LocalizationProvider>
+                  </Box>
+                  </form>
+                </Box>
+              </Modal>
     </Card>
   );
 }

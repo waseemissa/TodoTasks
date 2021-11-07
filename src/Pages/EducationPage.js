@@ -18,12 +18,15 @@ import TextField from "@mui/material/TextField";
 import MainNavigation from "../Components/Layout/MainNavigation";
 import { useEffect } from "react";
 import { useHistory } from "react-router";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
-  transform: "translate(-50%, -50%)",
+  transform: "translate(-50%, -45%)",
   width: 400,
   bgcolor: "background.paper",
   border: "1px solid #1976d2",
@@ -32,11 +35,14 @@ const style = {
   p: 4,
 };
 
-function EducationPage() {
+export default function EducationPage() {
   const history = new useHistory();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [degree, setDegree] = useState("");
+  const [years, setYears] = useState([]);
+  const [year, setYear] = useState("");
 
   const [educations, setEducations] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
@@ -50,7 +56,22 @@ function EducationPage() {
     getUserEdcuation();
     getPendingRequests();
     getSuggestions();
+    populateYears();
   }, []);
+
+  const populateYears = () => {
+    const today = new Date();
+    const max_year = today.getFullYear();
+
+    const years_select = [];
+
+
+    for (var i = 1990 ; i <= max_year; i++){
+       years_select[i] = i;
+    }
+    setYears(years_select);
+
+  }
 
   function getUserEdcuation() {
     getUserEdcuationAPI()
@@ -97,10 +118,8 @@ function EducationPage() {
   }
 
   async function addEducationAPI() {
-    const degree = document.getElementById("degree").value;
     const major = document.getElementById("major").value;
     const university = document.getElementById("university").value;
-    const year = document.getElementById("year").value;
     const authorization = localStorage.getItem("token");
 
     const response = await fetch(
@@ -109,10 +128,10 @@ function EducationPage() {
         method: "POST",
         headers: { accepts: "application/json", Authorization: authorization },
         body: new URLSearchParams({
-          degree: degree,
-          major: major,
-          university: university,
-          year: year,
+          'degree': degree,
+          'major': major,
+          'university': university,
+          'year': year,
         }),
       }
     );
@@ -157,8 +176,17 @@ function EducationPage() {
     return pending_response;
   }
 
+  const handleDegreeChange = (event) => {
+    setDegree(event.target.value);
+  };
+
+  const handleYearChange = (event) => {
+    setYear(event.target.value);
+  }
+
   const handleSave = () => {
     addEducation();
+    getUserEdcuation();
     handleClose();
   };
 
@@ -232,43 +260,81 @@ function EducationPage() {
                 </IconButton>
               </Box>
               <Modal open={open} onClose={handleClose} aria-labelledby="title">
-                <Box component="form" sx={style} noValidate autoComplete="off">
+                <Box sx={style} noValidate autoComplete="off">
+                  <form onSubmit={handleSave}>
                   <Typography id="title" variant="h6">
                     Add Education
                   </Typography>
                   <Box sx={{ display: "flex", flexDirection: "column" }}>
-                    <TextField
+                    <InputLabel
                       sx={{ marginTop: "15px" }}
+                    >
+                      Degree
+                    </InputLabel>
+                    <Select
                       id="degree"
-                      label="Degree"
-                      variant="outlined"
-                    ></TextField>
-                    <TextField
+                      required
+                      value={degree}
+                      onChange={handleDegreeChange}
+                    >                      
+                        <MenuItem value="Associate Degree">
+                          Associate Degree
+                        </MenuItem>
+                        <MenuItem value="Bachelor's Degree">
+                          Bachelor's Degree
+                        </MenuItem>
+                        <MenuItem value="Master's Degree">
+                          Master's Degree
+                        </MenuItem>
+                        <MenuItem value="Doctoral Degree">
+                          Doctoral Degree
+                        </MenuItem>
+                    </Select>
+                    <InputLabel
                       sx={{ marginTop: "15px" }}
+                    >
+                      Major
+                    </InputLabel>
+                    <TextField
                       id="major"
-                      label="Major"
+                      required
                       variant="outlined"
                     ></TextField>
-                    <TextField
+                    <InputLabel
                       sx={{ marginTop: "15px" }}
+                    >
+                      University
+                    </InputLabel>
+                    <TextField
                       id="university"
-                      label="University"
+                      required
                       variant="outlined"
                     ></TextField>
-                    <TextField
+                    <InputLabel
                       sx={{ marginTop: "15px" }}
+                    >
+                      Graduation Year
+                    </InputLabel>
+                    <Select
                       id="year"
-                      label="Year"
-                      variant="outlined"
-                    ></TextField>
+                      required
+                      value={year}
+                      onChange={handleYearChange}
+                    >
+                      {years.map((year) => (
+                        <MenuItem value={year}
+                        >{year}</MenuItem>
+                      ))}
+                    </Select>
                     <Button
                       sx={{ marginTop: "15px" }}
                       variant="contained"
-                      onClick={handleSave}
+                      type="submit"
                     >
                       Save
                     </Button>
                   </Box>
+                  </form>
                 </Box>
               </Modal>
               <Stack direction="column" spacing={2}>
@@ -360,4 +426,3 @@ function EducationPage() {
   );
 }
 
-export default EducationPage;

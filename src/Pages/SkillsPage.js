@@ -180,6 +180,7 @@ function SkillsPage() {
 
   const handleSave = () => {
     addSkill();
+    getUserSkills();
     handleClose();
   };
 
@@ -222,7 +223,8 @@ function SkillsPage() {
                 </IconButton>
               </Box>
               <Modal open={open} onClose={handleClose} aria-labelledby="title">
-                <Box component="form" sx={style} noValidate autoComplete="off">
+                <Box sx={style} noValidate autoComplete="off">
+                  <form onSubmit={handleSave}>
                   <Typography id="title" variant="h6">
                     Add Skill
                   </Typography>
@@ -230,18 +232,21 @@ function SkillsPage() {
                     <TextField
                       sx={{ marginTop: "15px" }}
                       id="skill_title"
-                      label="Title"
+                      required
+                      label="Skill"
                       variant="outlined"
-                      placeholder="What is your skill?"
+                      placeholder="Write your skill"
+                      inputProps = {{ minLength: "3"}}
                     ></TextField>
                     <Button
                       sx={{ marginTop: "15px" }}
                       variant="contained"
-                      onClick={handleSave}
+                      type="submit"
                     >
                       Save
                     </Button>
                   </Box>
+                  </form>
                 </Box>
               </Modal>
               <Stack id="skills" direction="column" spacing={2}>

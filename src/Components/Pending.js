@@ -2,6 +2,7 @@ import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
+import Typography from "@mui/material/Typography";
 import CardHeader from "@mui/material/CardHeader";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
@@ -96,7 +97,13 @@ export default function Pending(props) {
             src={props.picture}
           ></Avatar>
         }
-        title={props.name}
+        title={
+          <Typography>
+            <h4>
+            {props.name}
+            </h4>
+          </Typography>
+        }
       />
       <button hidden id="user2_id" value={props.id}></button>
       <Stack direction="row" sx={{ flex: "1" }}>

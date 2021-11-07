@@ -20,9 +20,9 @@ export default function UserEducation(props) {
         }
         title={
           <Typography>
-            <p>
+            <h4>
               {props.degree} in {props.major}
-            </p>
+            </h4>
             <p>
               {props.university} ({props.year})
             </p>

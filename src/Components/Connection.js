@@ -3,6 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
+import Typography from "@mui/material/Typography";
 import IconButton from '@mui/material/IconButton';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import BlockIcon from '@mui/icons-material/Block';
@@ -107,7 +108,13 @@ export default function Connection(props) {
           <Avatar aria-label="profile picture" src={props.picture}>
           </Avatar>
         }
-        title={props.name}
+        title={
+          <Typography>
+            <h4>
+            {props.name}
+            </h4>
+          </Typography>
+        }
         />
         <Stack sx={{display:'flex', flexDirection:'row'}}>
         <IconButton onClick={handleUnfollow} color="error" aria-label="Unfollow" component="span" sx={{flex:'1'}}>
