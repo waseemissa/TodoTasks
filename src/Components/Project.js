@@ -166,7 +166,7 @@ export default function Project(props) {
         }
         title={
           <Typography>
-            <p>{props.title}</p>
+            <h4>{props.title}</h4>
             <p>
               Due on {props.due_date} for {props.amount} USD
             </p>

@@ -153,7 +153,10 @@ function BlockedContacts() {
               </Box>
 
               <Stack id="connections" direction="column" spacing={2}>
-                {blockedContacts.map((contact) => (
+                {blockedContacts.length==0?
+                <h4 style={{color: "#1976d2" }}>People you blocked appear here</h4>
+                :
+                blockedContacts.map((contact) => (
                   <Blocked
                     id={contact.info.id}
                     name={
@@ -181,15 +184,23 @@ function BlockedContacts() {
                   </Typography>
                 </Box>
                 <Stack direction="column" spacing={2}>
-                  {pendingRequests.map((pendingRequest) => (
+                  {pendingRequests.length==0?
+                  <h4 style={{color: "#1976d2" }}>No Requests</h4>
+                  :
+                  pendingRequests.map((pendingRequest) => (
                     <Pending
                       id={pendingRequest.info.id}
+                      username={pendingRequest.info.username}
                       name={
                         pendingRequest.info.first_name +
                         " " +
                         pendingRequest.info.last_name
                       }
                       picture={pendingRequest.picture[0].picture_url}
+                      profession={pendingRequest.info.profession}
+                      email={pendingRequest.info.email}
+                      bio={pendingRequest.info.bio}
+                      phone_number={pendingRequest.info.phone_number}
                     ></Pending>
                   ))}
                 </Stack>
@@ -199,9 +210,10 @@ function BlockedContacts() {
           <Grid item>
             <React.Fragment>
               <CssBaseline />
-              <Container maxWidth="lg" sx={{ paddingTop: "15px" }}>
+              <Container maxWidth="lg">
                 <Box sx={{ height: "30px", marginBottom: "15px" }}>
                   <Typography
+                    sx={{ mt: 4, mb: 2 }}
                     variant="h5"
                     color="black"
                     sx={{ maxWidth: "900px", fontFamily: "Roboto" }}
@@ -210,7 +222,10 @@ function BlockedContacts() {
                   </Typography>
                 </Box>
                 <Stack direction="column" spacing={2}>
-                  {suggestions.map((suggestion) => (
+                  {suggestions.length==0?
+                  <h4 style={{color: "#1976d2" }}>No Suggestions</h4>
+                  :
+                  suggestions.map((suggestion) => (
                     <Suggestion
                       id={suggestion.info.id}
                       username={suggestion.info.username}

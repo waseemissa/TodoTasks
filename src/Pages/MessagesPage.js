@@ -111,15 +111,15 @@ function MessagesPage() {
                         fontFamily: "Roboto",
                       }}
                     >
-                      <h4
+                      <h3
                         style={{
                           paddingLeft: "10px",
                           paddingTop: "5px",
-                          color: "#000",
+                          color: "#fff",
                         }}
                       >
                         {message.username}
-                      </h4>
+                      </h3>
                       <p style={{ paddingLeft: "15px" }}>{message.message}</p>
                     </div>
                   );

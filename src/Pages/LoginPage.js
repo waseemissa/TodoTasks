@@ -80,8 +80,8 @@ export default function LoginPage() {
     login();
   };
   return (
-    <div style={{ height: "100vh", backgroundImage: `url(${background})`, marginTop:'-20px'}}>
-    <center><h1 style={{fontFamily: "Roboto", color:'#1976d2' }}>Todo Tasks</h1></center>
+    <div style={{ height: "100vh", backgroundImage: `url(${background})`, marginTop:'-30px'}}>
+    <center><h1 style={{fontFamily: "Roboto", color:'#1976d2', fontSize:'35pt' }}>Todo Tasks</h1></center>
     <center>
               <Grid item xs
                 md={5}

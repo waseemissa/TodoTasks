@@ -41,7 +41,14 @@ const style = {
 function ProjectsPage() {
   const history = new useHistory();
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    if(freelancers.length==0){
+      alert("Follow at least one freelancer before adding a project!");
+    }
+    else{
+      setOpen(true);
+    }
+  }
   const handleClose = () => setOpen(false);
 
   const [pendingRequests, setPendingRequests] = useState([]);
@@ -305,7 +312,7 @@ function ProjectsPage() {
                       id="demo-simple-select-label"
                       sx={{ marginTop: "15px" }}
                     >
-                      Select a Followed Freelancer
+                      Select a Freelancer From Your Followers
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
@@ -374,7 +381,10 @@ function ProjectsPage() {
                 </Box>
               </Modal>
               <Stack direction="column" spacing={2}>
-                {projects.map((project) => (
+                {projects.length==0?
+                <h4 style={{color: "#1976d2" }}>Add projects by clicking on the plus icon</h4>
+                :
+                projects.map((project) => (
                   <Project
                     id={project.id}
                     amount={project.price}
@@ -401,7 +411,10 @@ function ProjectsPage() {
                   </Typography>
                 </Box>
                 <Stack direction="column" spacing={2}>
-                  {pendingRequests.map((pendingRequest) => (
+                  {pendingRequests.length==0?
+                  <h4 style={{color: "#1976d2" }}>No Requests</h4>
+                  :
+                  pendingRequests.map((pendingRequest) => (
                     <Pending
                       id={pendingRequest.info.id}
                       username={pendingRequest.info.username}
@@ -436,7 +449,10 @@ function ProjectsPage() {
                   </Typography>
                 </Box>
                 <Stack direction="column" spacing={2}>
-                  {suggestions.map((suggestion) => (
+                  {suggestions.length==0?
+                  <h4 style={{color: "#1976d2" }}>No Suggestions</h4>
+                  :
+                  suggestions.map((suggestion) => (
                     <Suggestion
                       id={suggestion.info.id}
                       username={suggestion.info.username}

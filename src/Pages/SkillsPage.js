@@ -250,7 +250,10 @@ function SkillsPage() {
                 </Box>
               </Modal>
               <Stack id="skills" direction="column" spacing={2}>
-                {skills.map((skill) => (
+                {skills.length==0?
+                <h4 style={{color: "#1976d2" }}>Add your skills by clicking on the plus icon</h4>
+                :
+                skills.map((skill) => (
                   <UserSkill id={skill.id} title={skill.title}></UserSkill>
                 ))}
               </Stack>
@@ -272,15 +275,23 @@ function SkillsPage() {
                   </Typography>
                 </Box>
                 <Stack direction="column" spacing={2}>
-                  {pendingRequests.map((pendingRequest) => (
+                  {pendingRequests.length==0?
+                  <h4 style={{color: "#1976d2" }}>No Requests</h4>
+                  :
+                  pendingRequests.map((pendingRequest) => (
                     <Pending
                       id={pendingRequest.info.id}
+                      username={pendingRequest.info.username}
                       name={
                         pendingRequest.info.first_name +
                         " " +
                         pendingRequest.info.last_name
                       }
                       picture={pendingRequest.picture[0].picture_url}
+                      profession={pendingRequest.info.profession}
+                      email={pendingRequest.info.email}
+                      bio={pendingRequest.info.bio}
+                      phone_number={pendingRequest.info.phone_number}
                     ></Pending>
                   ))}
                 </Stack>
@@ -290,9 +301,10 @@ function SkillsPage() {
           <Grid item>
             <React.Fragment>
               <CssBaseline />
-              <Container maxWidth="lg" sx={{ paddingTop: "15px" }}>
+              <Container maxWidth="lg">
                 <Box sx={{ height: "30px", marginBottom: "15px" }}>
                   <Typography
+                    sx={{ mt: 4, mb: 2 }}
                     variant="h5"
                     color="black"
                     sx={{ maxWidth: "900px", fontFamily: "Roboto" }}
@@ -301,7 +313,10 @@ function SkillsPage() {
                   </Typography>
                 </Box>
                 <Stack direction="column" spacing={2}>
-                  {suggestions.map((suggestion) => (
+                  {suggestions.length==0?
+                  <h4 style={{color: "#1976d2" }}>No Suggestions</h4>
+                  :
+                  suggestions.map((suggestion) => (
                     <Suggestion
                       id={suggestion.info.id}
                       username={suggestion.info.username}
