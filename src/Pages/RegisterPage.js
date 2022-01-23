@@ -2,7 +2,7 @@ import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import background from "../Images/bg.jpg";
+import background from "../images/bg.jpg";
 import SendIcon from "@mui/icons-material/Send";
 import Button from "@mui/material/Button";
 import Radio from "@mui/material/Radio";
